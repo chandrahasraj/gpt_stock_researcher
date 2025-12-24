@@ -28,6 +28,25 @@ uvicorn services.mcp_server.main:app --reload
 python -m src.pipelines.stock_pipeline --ticker ASTS --mode interactive --model-id public:gpt-x
 ```
 
+## Infrastructure (AWS CDK)
+
+Infrastructure lives under `infra/` and deploys an ECS Fargate Spot service for the MCP server, a scheduled pipeline runner, and an S3 bucket for run artifacts.
+
+```bash
+cd infra
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ..[dev]
+
+# Set your AWS credentials before running CDK.
+cdk synth
+cdk deploy \
+  --parameters ContainerImage=<image-uri> \
+  --parameters ServerCommand="uvicorn services.mcp_server.main:app --host 0.0.0.0 --port 8000" \
+  --parameters PipelineCommand="python -m src.pipelines.stock_pipeline --ticker ASTS --mode batch" \
+  --parameters PipelineSchedule="rate(1 day)"
+```
+
 ## Notes
 - The implementation is intentionally minimal and focused on structure.
 - Tools return structured JSON and write artifacts to local storage under `runs/`.
