@@ -10,14 +10,17 @@ from src.core.schemas.models import (
     ChecklistResult,
     DerivedMetrics,
     Financials,
+    FinancialStatement,
     FilingRef,
     GuidanceClaims,
     MarketSnapshot,
+    NewsBundle,
     OwnershipSnapshot,
     PersonaReview,
     ReportBundle,
     RunContext,
     RunPaths,
+    SocialBundle,
 )
 from src.core.storage.local_storage import LocalStorage
 
@@ -69,12 +72,12 @@ def fetch_sec_filings(ticker: str, forms: List[str], limit: int = 3) -> List[Fil
 
 
 def parse_filing_financials(_filing_local_path: str) -> Financials:
-    empty_statement = {
-        "line_items": {},
-        "currency": None,
-        "period_start": None,
-        "period_end": None,
-    }
+    empty_statement = FinancialStatement(
+        line_items={},
+        currency=None,
+        period_start=None,
+        period_end=None,
+    )
     return Financials(
         income_statement=empty_statement,
         balance_sheet=empty_statement,
@@ -126,12 +129,12 @@ def fetch_ownership_and_holders(_ticker: str) -> OwnershipSnapshot:
     return OwnershipSnapshot(top_holders=[], institutional_ownership=None)
 
 
-def fetch_news(_ticker: str, _days_back: int, _recency_weighted: bool) -> Dict[str, Any]:
-    return {"articles": []}
+def fetch_news(_ticker: str, _days_back: int, _recency_weighted: bool) -> NewsBundle:
+    return NewsBundle(articles=[])
 
 
-def fetch_social_sentiment(_ticker: str, _platforms: List[str], _days_back: int) -> Dict[str, Any]:
-    return {"themes": [], "bull_cases": [], "bear_cases": [], "notable_posts": []}
+def fetch_social_sentiment(_ticker: str, _platforms: List[str], _days_back: int) -> SocialBundle:
+    return SocialBundle(themes=[], bull_cases=[], bear_cases=[], notable_posts=[])
 
 
 def build_boosters_downtrends(*_args: Any, **_kwargs: Any) -> BoostersDowntrends:

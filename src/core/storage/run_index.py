@@ -10,13 +10,13 @@ class RunIndex:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if not self.path.exists():
-            self.path.write_text(json.dumps({}, indent=2))
+            self.path.write_text(json.dumps({}, indent=2), encoding="utf-8")
 
     def _load(self) -> Dict[str, Any]:
-        return json.loads(self.path.read_text())
+        return json.loads(self.path.read_text(encoding="utf-8"))
 
     def _write(self, data: Dict[str, Any]) -> None:
-        self.path.write_text(json.dumps(data, indent=2))
+        self.path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
     def put(self, ticker: str, as_of_date: str, run_id: str, payload: Dict[str, Any]) -> None:
         data = self._load()
@@ -30,3 +30,11 @@ class RunIndex:
         if not approved:
             return None
         return sorted(approved, key=lambda entry: entry.get("created_at", ""))[-1]
+
+    def find_by_run_id(self, run_id: str) -> Optional[Dict[str, Any]]:
+        data = self._load()
+        for ticker in data.values():
+            for entry in ticker.values():
+                if entry.get("run_id") == run_id:
+                    return entry
+        return None

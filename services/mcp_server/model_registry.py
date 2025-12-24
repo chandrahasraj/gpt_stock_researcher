@@ -9,10 +9,12 @@ import yaml
 class ModelRegistry:
     def __init__(self, config_path: str) -> None:
         self.config_path = Path(config_path)
+        if not self.config_path.exists():
+            raise FileNotFoundError(f"Model registry not found: {self.config_path}")
         self._models = self._load()
 
     def _load(self) -> List[Dict[str, Any]]:
-        data = yaml.safe_load(self.config_path.read_text())
+        data = yaml.safe_load(self.config_path.read_text(encoding="utf-8"))
         return data.get("models", [])
 
     def list_models(self) -> List[Dict[str, Any]]:

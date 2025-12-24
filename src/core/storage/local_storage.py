@@ -19,18 +19,18 @@ class LocalStorage:
     def write_json(self, path: str, payload: Dict[str, Any]) -> str:
         full_path = self.base_dir / path
         full_path.parent.mkdir(parents=True, exist_ok=True)
-        full_path.write_text(json.dumps(payload, indent=2, default=str))
+        full_path.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
         return str(full_path)
 
     def write_text(self, path: str, content: str) -> str:
         full_path = self.base_dir / path
         full_path.parent.mkdir(parents=True, exist_ok=True)
-        full_path.write_text(content)
+        full_path.write_text(content, encoding="utf-8")
         return str(full_path)
 
     def read_json(self, path: str) -> Dict[str, Any]:
         full_path = self.base_dir / path
-        return json.loads(full_path.read_text())
+        return json.loads(full_path.read_text(encoding="utf-8"))
 
     def exists(self, path: str) -> bool:
         return (self.base_dir / path).exists()
