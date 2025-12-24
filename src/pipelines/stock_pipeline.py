@@ -5,6 +5,7 @@ from dataclasses import asdict
 from datetime import date
 from typing import Any, Dict, Optional
 
+from src.core.config import get_settings
 from src.core.schemas.models import AnalysisPacket
 from src.core.storage.local_storage import LocalStorage
 from src.core.storage.run_index import RunIndex
@@ -21,8 +22,9 @@ def run_pipeline(
     thresholds: Optional[Dict[str, Any]] = None,
     max_iters: int = 1,
 ) -> Dict[str, Any]:
-    storage = LocalStorage()
-    run_index = RunIndex()
+    settings = get_settings()
+    storage = LocalStorage(settings.runs_dir)
+    run_index = RunIndex(f"{settings.runs_dir}/run_index.json")
 
     run_context = placeholder_tools.init_run_context(ticker, as_of_date, mode, model_id, storage)
     filings = placeholder_tools.fetch_sec_filings(ticker, ["10-Q", "10-K", "8-K"], limit=3)
