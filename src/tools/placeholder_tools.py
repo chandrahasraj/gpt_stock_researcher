@@ -121,7 +121,7 @@ def extract_guidance_and_claims(_docs: List[Dict[str, Any]]) -> GuidanceClaims:
     )
 
 
-def fetch_market_data(_ticker: str, _window: str) -> MarketSnapshot:
+def fetch_market_data(_ticker: str, window: str) -> MarketSnapshot:
     return MarketSnapshot(price=None, market_cap=None, high_52w=None, low_52w=None, returns={})
 
 
@@ -129,11 +129,11 @@ def fetch_ownership_and_holders(_ticker: str) -> OwnershipSnapshot:
     return OwnershipSnapshot(top_holders=[], institutional_ownership=None)
 
 
-def fetch_news(_ticker: str, _days_back: int, _recency_weighted: bool) -> NewsBundle:
+def fetch_news(_ticker: str, days_back: int, recency_weighted: bool) -> NewsBundle:
     return NewsBundle(articles=[])
 
 
-def fetch_social_sentiment(_ticker: str, _platforms: List[str], _days_back: int) -> SocialBundle:
+def fetch_social_sentiment(_ticker: str, platforms: List[str], days_back: int) -> SocialBundle:
     return SocialBundle(themes=[], bull_cases=[], bear_cases=[], notable_posts=[])
 
 
