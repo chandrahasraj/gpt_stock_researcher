@@ -1,0 +1,13 @@
+models:
+  - model_id: public:gpt-x
+    type: public
+    endpoint: https://api.openai.com/v1/chat/completions
+    auth: env:OPENAI_API_KEY
+    max_tokens: 4096
+    tool_support: true
+  - model_id: cluster:sa-stock-v3
+    type: cluster
+    endpoint: http://localhost:8001/generate
+    auth: none
+    max_tokens: 4096
+    tool_support: true

@@ -1,0 +1,25 @@
+[project]
+name = "stock-analysis-agent"
+version = "0.1.0"
+description = "Stock Analysis Agent with MCP server, pipeline, and tooling"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "OpenAI"}]
+dependencies = [
+  "fastapi>=0.110.0",
+  "pydantic>=2.6.0",
+  "pydantic-settings>=2.2.0",
+  "uvicorn>=0.27.0",
+  "PyYAML>=6.0.1",
+  "httpx>=0.26.0",
+]
+
+[project.scripts]
+stock-pipeline = "src.pipelines.stock_pipeline:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
